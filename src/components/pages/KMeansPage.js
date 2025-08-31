@@ -1,13 +1,7 @@
 // src/components/pages/KMeansPage.js
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Target, Circle, Grid, Layers } from 'lucide-react';
-
-// Import clustering components (we'll create these)
 import StandardKMeans from '../algorithms/KMeans/StandardKMeans';
-import KMeansPlusPlus from '../algorithms/KMeans/KMeansPlusPlus';
-import MiniBatchKMeans from '../algorithms/KMeans/MiniBatchKMeans';
-import FuzzyKMeans from '../algorithms/KMeans/FuzzyKMeans';
 
 function KMeansPage() {
   const [activeType, setActiveType] = useState('standard');
@@ -17,8 +11,6 @@ function KMeansPage() {
       id: 'standard',
       title: 'Standard K-Means',
       description: 'Classic K-means clustering with random centroid initialization',
-      icon: <Target size={24} />,
-      component: <StandardKMeans />,
       difficulty: 'Beginner',
       status: 'ready'
     },
@@ -26,8 +18,6 @@ function KMeansPage() {
       id: 'kmeans-plus-plus',
       title: 'K-Means++',
       description: 'Improved initialization method for better clustering results',
-      icon: <Circle size={24} />,
-      component: <KMeansPlusPlus />,
       difficulty: 'Intermediate',
       status: 'coming-soon'
     },
@@ -35,8 +25,6 @@ function KMeansPage() {
       id: 'mini-batch',
       title: 'Mini-Batch K-Means',
       description: 'Faster K-means using random samples for large datasets',
-      icon: <Grid size={24} />,
-      component: <MiniBatchKMeans />,
       difficulty: 'Intermediate',
       status: 'coming-soon'
     },
@@ -44,8 +32,6 @@ function KMeansPage() {
       id: 'fuzzy',
       title: 'Fuzzy K-Means',
       description: 'Soft clustering where points can belong to multiple clusters',
-      icon: <Layers size={24} />,
-      component: <FuzzyKMeans />,
       difficulty: 'Advanced',
       status: 'coming-soon'
     }
@@ -61,13 +47,12 @@ function KMeansPage() {
           to="/" 
           className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-6"
         >
-          <ArrowLeft size={20} className="mr-2" />
-          Back to Home
+          ← Back to Home
         </Link>
         
         <div className="flex items-center space-x-4 mb-6">
           <div className="p-3 bg-purple-100 rounded-xl">
-            <Target className="text-purple-600" size={32} />
+            <span className="text-purple-600 text-2xl">🎯</span>
           </div>
           <div>
             <h1 className="text-4xl font-bold text-gray-900">K-Means Clustering</h1>
@@ -93,9 +78,6 @@ function KMeansPage() {
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                 }`}
               >
-                <div className={`${activeType === type.id ? 'text-purple-600' : type.status === 'coming-soon' ? 'text-gray-400' : 'text-gray-500'}`}>
-                  {type.icon}
-                </div>
                 <div className="text-left">
                   <div className="font-medium">{type.title}</div>
                   <div className="text-xs opacity-75">{type.description}</div>
@@ -132,19 +114,18 @@ function KMeansPage() {
         {activeComponent.status === 'ready' ? (
           <div className="p-6">
             <div className="mb-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2 flex items-center space-x-3">
-                {activeComponent.icon}
-                <span>{activeComponent.title}</span>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                {activeComponent.title}
               </h2>
               <p className="text-gray-600">{activeComponent.description}</p>
             </div>
-            {activeComponent.component}
+            <StandardKMeans />
           </div>
         ) : (
           <div className="p-16 text-center">
             <div className="mb-6">
               <div className="p-4 bg-yellow-100 rounded-full inline-block">
-                {activeComponent.icon}
+                <span className="text-4xl">🚧</span>
               </div>
             </div>
             <h3 className="text-2xl font-bold text-gray-900 mb-2">
@@ -154,7 +135,7 @@ function KMeansPage() {
               {activeComponent.description}
             </p>
             <p className="text-yellow-600 font-medium">
-              🚧 This clustering variation is coming soon! 
+              This clustering variation is coming soon! 
             </p>
             <p className="text-gray-500 text-sm mt-2">
               For now, try the Standard K-Means demo above.

@@ -1,7 +1,6 @@
 // src/components/algorithms/KMeans/StandardKMeans.js
 import React, { useState, useEffect } from 'react';
 import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
-import { Play, Pause, RotateCcw, Plus, Settings, Zap } from 'lucide-react';
 
 function StandardKMeans() {
   const [points, setPoints] = useState([]);
@@ -314,8 +313,7 @@ function StandardKMeans() {
                     : 'bg-green-600 text-white hover:bg-green-700'
                 } disabled:opacity-50 disabled:cursor-not-allowed`}
               >
-                {isRunning ? <Pause size={16} /> : <Play size={16} />}
-                {isRunning ? 'Pause' : 'Run Algorithm'}
+                {isRunning ? '⏸️ Pause' : '▶️ Run Algorithm'}
               </button>
 
               <button
@@ -323,24 +321,21 @@ function StandardKMeans() {
                 disabled={converged || centroids.length === 0}
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 flex items-center gap-2"
               >
-                <Zap size={16} />
-                Step Once
+                ⚡ Step Once
               </button>
 
               <button
                 onClick={initializeCentroids}
                 className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 flex items-center gap-2"
               >
-                <RotateCcw size={16} />
-                Reset Centroids
+                🔄 Reset Centroids
               </button>
 
               <button
                 onClick={() => generateRandomPoints(50)}
                 className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 flex items-center gap-2"
               >
-                <Plus size={16} />
-                New Data
+                ➕ New Data
               </button>
             </div>
 
@@ -372,8 +367,7 @@ function StandardKMeans() {
           {/* Settings */}
           <div className="bg-gray-50 rounded-lg p-4">
             <h4 className="text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
-              <Settings size={20} />
-              Settings
+              ⚙️ Settings
             </h4>
             
             <div className="space-y-4">
