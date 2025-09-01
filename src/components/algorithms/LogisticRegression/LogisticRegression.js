@@ -3,7 +3,6 @@ import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Re
 
 function LogisticRegression() {
   const [data, setData] = useState([]);
-  const [showTooltip, setShowTooltip] = useState(true);
   const [newestPointId, setNewestPointId] = useState(null);
   const [currentCursorPos, setCurrentCursorPos] = useState({ x: 0, y: 0 });
   const [cursorTooltip, setCursorTooltip] = useState({ show: false, x: 0, y: 0 });
@@ -232,8 +231,8 @@ function LogisticRegression() {
           <div className="flex items-start space-x-2">
             <span className="inline-flex items-center justify-center w-6 h-6 bg-orange-500 text-white rounded-full text-xs font-bold flex-shrink-0">4</span>
             <div>
-              <p className="font-semibold text-orange-800">Try Presets</p>
-              <p className="text-orange-700 text-xs">Use "Binary Split" or "Sigmoid Pattern" buttons ✨</p>
+              <p className="font-semibold text-orange-800">Monitor Progress</p>
+              <p className="text-orange-700 text-xs">Watch accuracy and log loss improve in real-time ✨</p>
             </div>
           </div>
         </div>
@@ -262,35 +261,8 @@ function LogisticRegression() {
           <div className="bg-gray-50 rounded-lg p-4">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-xl font-bold text-gray-800">Logistic Regression</h3>
-              <button
-                onClick={() => setShowTooltip(!showTooltip)}
-                className="text-blue-600 hover:text-blue-800 transition-colors"
-              >
-                ℹ️
-              </button>
             </div>
             
-            {showTooltip && (
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4 text-sm text-blue-800">
-                <div className="font-bold mb-2">🚀 Getting Started - Try This!</div>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <p className="font-semibold mb-1">🎯 Step 1: Select Class</p>
-                    <p className="text-xs mb-2">Choose Class 0 (red) or Class 1 (green) from controls panel</p>
-                    
-                    <p className="font-semibold mb-1">📈 Step 2: Watch S-Curve</p>
-                    <p className="text-xs mb-2">See the blue sigmoid curve automatically fit your data</p>
-                  </div>
-                  <div>
-                    <p className="font-semibold mb-1">📊 Step 3: Check Metrics</p>
-                    <p className="text-xs mb-2">Monitor accuracy and log loss (right panel)</p>
-                    
-                    <p className="font-semibold mb-1">📍 Step 4: Add Points</p>
-                    <p className="text-xs">Click on graph or use "Add Class X Point" button</p>
-                  </div>
-                </div>
-              </div>
-            )}
 
             <div className="relative">
               <div 
@@ -586,12 +558,25 @@ function LogisticRegression() {
               </p>
             </div>
 
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
+              <h4 className="font-semibold text-yellow-800 mb-2">🧠 Why Sigmoid?</h4>
+              <p className="text-sm text-yellow-700 mb-2">
+                Unlike linear regression, we need outputs between 0 and 1 (probabilities). The sigmoid function:
+              </p>
+              <ul className="text-sm text-yellow-700 space-y-1">
+                <li>• <strong>S-shaped curve:</strong> Smooth transition from 0 to 1</li>
+                <li>• <strong>Never exceeds bounds:</strong> Always between 0 and 1</li>
+                <li>• <strong>Interpretable:</strong> Output is actual probability</li>
+                <li>• <strong>Differentiable:</strong> Allows gradient descent optimization</li>
+              </ul>
+            </div>
+
             <h4 className="font-semibold text-gray-800 mb-2">📊 Key Metrics</h4>
             <ul className="text-sm text-gray-700 space-y-1 mb-4">
               <li><strong>Accuracy:</strong> Percentage of correct predictions</li>
               <li><strong>Log Loss:</strong> Penalizes wrong confident predictions (lower is better)</li>
-              <li><strong>Odds Ratio:</strong> e^β tells how odds change with 1-unit increase</li>
-              <li><strong>Decision Boundary:</strong> Where P(y=1) = 0.5</li>
+              <li><strong>Precision/Recall:</strong> Important for imbalanced datasets</li>
+              <li><strong>AUC-ROC:</strong> Area under ROC curve (discrimination ability)</li>
             </ul>
           </div>
 
@@ -623,12 +608,33 @@ function LogisticRegression() {
 
             <div className="bg-green-50 border border-green-200 rounded-lg p-4 mt-4">
               <h4 className="font-semibold text-green-800 mb-2">🎯 Real-World Applications</h4>
-              <ul className="text-sm text-green-700 space-y-1">
-                <li>• <strong>Medical:</strong> Disease diagnosis (positive/negative)</li>
-                <li>• <strong>Marketing:</strong> Email spam detection</li>
-                <li>• <strong>Finance:</strong> Loan approval decisions</li>
-                <li>• <strong>Tech:</strong> Click-through rate prediction</li>
-                <li>• <strong>HR:</strong> Candidate selection process</li>
+              <div className="grid grid-cols-2 gap-3 text-sm">
+                <div>
+                  <p className="font-semibold text-purple-800">🏥 Healthcare</p>
+                  <p className="text-gray-600 text-xs">Disease diagnosis, treatment response</p>
+                </div>
+                <div>
+                  <p className="font-semibold text-blue-800">💰 Finance</p>
+                  <p className="text-gray-600 text-xs">Credit approval, fraud detection</p>
+                </div>
+                <div>
+                  <p className="font-semibold text-green-800">📧 Tech</p>
+                  <p className="text-gray-600 text-xs">Spam detection, click prediction</p>
+                </div>
+                <div>
+                  <p className="font-semibold text-orange-800">📈 Marketing</p>
+                  <p className="text-gray-600 text-xs">Customer conversion, churn prediction</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 mt-4">
+              <h4 className="font-semibold text-purple-800 mb-2">🔍 Advanced Concepts</h4>
+              <ul className="text-sm text-purple-700 space-y-1">
+                <li>• <strong>Regularization:</strong> L1 (Lasso) and L2 (Ridge) prevent overfitting</li>
+                <li>• <strong>Feature Engineering:</strong> Polynomial features for non-linear relationships</li>
+                <li>• <strong>Class Imbalance:</strong> Use SMOTE, cost-sensitive learning, or threshold tuning</li>
+                <li>• <strong>Multinomial Extension:</strong> Softmax for multi-class classification</li>
               </ul>
             </div>
           </div>
@@ -686,6 +692,47 @@ function LogisticRegression() {
                 <span><strong>Perfect Separation:</strong> Problems when classes are perfectly separable</span>
               </li>
             </ul>
+          </div>
+        </div>
+
+        {/* Learning Path - moved to end */}
+        <div className="mt-8 pt-6 border-t border-gray-200">
+          <h3 className="text-xl font-semibold text-indigo-800 mb-2">Wanna learn more? Here is what you should know.</h3>
+          <p className="text-gray-600 mb-4 text-sm">Learning path: Beginner to Advanced</p>
+          
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="bg-white border border-green-200 rounded-lg p-4">
+              <h4 className="font-semibold text-green-800 mb-3">🌱 Beginner Level</h4>
+              <ul className="text-sm text-gray-700 space-y-2">
+                <li>✓ Understanding binary classification</li>
+                <li>✓ Interpreting probabilities (0 to 1)</li>
+                <li>✓ Sigmoid curve behavior</li>
+                <li>✓ Basic accuracy interpretation</li>
+                <li>✓ When to use vs linear regression</li>
+              </ul>
+            </div>
+            
+            <div className="bg-white border border-blue-200 rounded-lg p-4">
+              <h4 className="font-semibold text-blue-800 mb-3">⚡ Intermediate Level</h4>
+              <ul className="text-sm text-gray-700 space-y-2">
+                <li>✓ Log-likelihood & cost function</li>
+                <li>✓ Coefficient interpretation (odds ratios)</li>
+                <li>✓ Cross-validation techniques</li>
+                <li>✓ Precision, Recall, F1-score</li>
+                <li>✓ ROC curves and AUC</li>
+              </ul>
+            </div>
+            
+            <div className="bg-white border border-purple-200 rounded-lg p-4">
+              <h4 className="font-semibold text-purple-800 mb-3">🎯 Advanced Level</h4>
+              <ul className="text-sm text-gray-700 space-y-2">
+                <li>✓ L1/L2 regularization techniques</li>
+                <li>✓ Handling severe class imbalance</li>
+                <li>✓ Feature selection & engineering</li>
+                <li>✓ Multinomial & ordinal extensions</li>
+                <li>✓ Bayesian logistic regression</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>

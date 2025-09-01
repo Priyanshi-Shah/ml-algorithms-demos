@@ -7,6 +7,7 @@ import LinearRegressionPage from './components/pages/LinearRegressionPage';
 import KMeansPage from './components/pages/KMeansPage';
 import LogisticRegressionPage from './components/pages/LogisticRegressionPage';
 import SVMPage from './components/pages/SVMPage';
+import LossFunctionsPage from './components/pages/LossFunctionsPage';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/kmeans" element={<KMeansPage />} />
           <Route path="/logistic-regression" element={<LogisticRegressionPage />} />
           <Route path="/svm" element={<SVMPage />} />
+          <Route path="/loss-functions" element={<LossFunctionsPage />} />
         </Routes>
       </div>
     </Router>
