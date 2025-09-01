@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/ml-algorithms-demos/static/css/main.e6c13ad2.css",
-    "main.js": "/ml-algorithms-demos/static/js/main.b162b72b.js",
+    "main.js": "/ml-algorithms-demos/static/js/main.fdc9b76d.js",
     "static/js/453.8ea49ec1.chunk.js": "/ml-algorithms-demos/static/js/453.8ea49ec1.chunk.js",
     "index.html": "/ml-algorithms-demos/index.html",
     "main.e6c13ad2.css.map": "/ml-algorithms-demos/static/css/main.e6c13ad2.css.map",
-    "main.b162b72b.js.map": "/ml-algorithms-demos/static/js/main.b162b72b.js.map",
+    "main.fdc9b76d.js.map": "/ml-algorithms-demos/static/js/main.fdc9b76d.js.map",
     "453.8ea49ec1.chunk.js.map": "/ml-algorithms-demos/static/js/453.8ea49ec1.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e6c13ad2.css",
-    "static/js/main.b162b72b.js"
+    "static/js/main.fdc9b76d.js"
   ]
 }
