@@ -293,6 +293,61 @@ function StandardKMeans() {
 
   return (
     <div className="space-y-6">
+      {/* Quick Start Guide */}
+      <div className="bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-lg p-4">
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg font-bold text-gray-800 mb-3">🚀 Quick Start Guide</h3>
+        </div>
+        <div className="grid md:grid-cols-4 gap-4 text-sm">
+          <div className="flex items-start space-x-2">
+            <span className="inline-flex items-center justify-center w-6 h-6 bg-green-500 text-white rounded-full text-xs font-bold flex-shrink-0">1</span>
+            <div>
+              <p className="font-semibold text-green-800">Add Points</p>
+              <p className="text-green-700 text-xs">Click on the graph or use "Add Point" button</p>
+            </div>
+          </div>
+          <div className="flex items-start space-x-2">
+            <span className="inline-flex items-center justify-center w-6 h-6 bg-blue-500 text-white rounded-full text-xs font-bold flex-shrink-0">2</span>
+            <div>
+              <p className="font-semibold text-blue-800">Set K Value</p>
+              <p className="text-blue-700 text-xs">Use slider (right panel) to choose clusters (try 3)</p>
+            </div>
+          </div>
+          <div className="flex items-start space-x-2">
+            <span className="inline-flex items-center justify-center w-6 h-6 bg-purple-500 text-white rounded-full text-xs font-bold flex-shrink-0">3</span>
+            <div>
+              <p className="font-semibold text-purple-800">Reset Centroids</p>
+              <p className="text-purple-700 text-xs">Click "Reset Centroids" to place cluster centers</p>
+            </div>
+          </div>
+          <div className="flex items-start space-x-2">
+            <span className="inline-flex items-center justify-center w-6 h-6 bg-orange-500 text-white rounded-full text-xs font-bold flex-shrink-0">4</span>
+            <div>
+              <p className="font-semibold text-orange-800">Run Algorithm</p>
+              <p className="text-orange-700 text-xs">Hit "Run Algorithm" and watch the magic happen! ✨</p>
+            </div>
+          </div>
+        </div>
+        <div className="mt-3 pt-3 border-t border-green-200">
+          <p className="text-sm text-gray-600 mb-2"><strong>💡 Pro Tip:</strong> Try the preset data first! Click:</p>
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => loadPreset('circles')}
+              className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs hover:bg-green-200 transition-colors"
+            >
+              Circular Clusters
+            </button>
+            <button
+              onClick={() => loadPreset('elongated')}
+              className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs hover:bg-blue-200 transition-colors"
+            >
+              Elongated Clusters
+            </button>
+            <span className="text-xs text-gray-500 self-center">← Perfect for beginners!</span>
+          </div>
+        </div>
+      </div>
+
       <div className="grid lg:grid-cols-4 gap-6">
         {/* Chart Section */}
         <div className="lg:col-span-3">
@@ -318,9 +373,24 @@ function StandardKMeans() {
             </div>
             
             {showTooltip && (
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4 text-sm text-blue-800">
-                💡 <strong>How to use:</strong> Click anywhere on the graph to add data points! 
-                Watch how the K-means algorithm groups your points into clusters.
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4 text-sm text-blue-800">
+                <div className="font-bold mb-2">🚀 Getting Started - Try This!</div>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <p className="font-semibold mb-1">📍 Step 1: Add Points</p>
+                    <p className="text-xs mb-2">Click anywhere on the graph to add data points, or use the "Add Point" button</p>
+                    
+                    <p className="font-semibold mb-1">⚙️ Step 2: Set Clusters</p>
+                    <p className="text-xs mb-2">Use the K slider (right panel) to choose how many groups you want (try 2-4)</p>
+                  </div>
+                  <div>
+                    <p className="font-semibold mb-1">🎯 Step 3: Initialize</p>
+                    <p className="text-xs mb-2">Click "Reset Centroids" to place cluster centers randomly</p>
+                    
+                    <p className="font-semibold mb-1">▶️ Step 4: Watch Magic!</p>
+                    <p className="text-xs">Click "Run Algorithm" and watch points get grouped automatically!</p>
+                  </div>
+                </div>
               </div>
             )}
 
