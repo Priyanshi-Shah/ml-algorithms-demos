@@ -8,7 +8,9 @@ function Navigation() {
   
   const algorithms = [
     { path: '/linear-regression', label: 'Linear Regression' },
-    { path: '/kmeans', label: 'K-Means Clustering' }
+    { path: '/kmeans', label: 'K-Means Clustering' },
+    { path: '/logistic-regression', label: 'Logistic Regression' },
+    { path: '/svm', label: 'Support Vector Machine' }
   ];
 
   const isHomepage = location.pathname === '/';

@@ -4,7 +4,9 @@ import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import Navigation from './components/shared/Navigation';
 import HomePage from './components/pages/HomePage';
 import LinearRegressionPage from './components/pages/LinearRegressionPage';
-import KMeansPage from './components/pages/KMeansPage';  // Add this line
+import KMeansPage from './components/pages/KMeansPage';
+import LogisticRegressionPage from './components/pages/LogisticRegressionPage';
+import SVMPage from './components/pages/SVMPage';
 
 function App() {
   return (
@@ -14,7 +16,9 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/linear-regression" element={<LinearRegressionPage />} />
-          <Route path="/kmeans" element={<KMeansPage />} />  {/* Updated this line */}
+          <Route path="/kmeans" element={<KMeansPage />} />
+          <Route path="/logistic-regression" element={<LogisticRegressionPage />} />
+          <Route path="/svm" element={<SVMPage />} />
         </Routes>
       </div>
     </Router>

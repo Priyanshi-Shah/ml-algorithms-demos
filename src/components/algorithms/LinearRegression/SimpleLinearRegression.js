@@ -157,7 +157,7 @@ function SimpleLinearRegression() {
             <span className="inline-flex items-center justify-center w-6 h-6 bg-green-500 text-white rounded-full text-xs font-bold flex-shrink-0">1</span>
             <div>
               <p className="font-semibold text-green-800">Add Points</p>
-              <p className="text-green-700 text-xs">Click on the graph or use "Add Random Point" button</p>
+              <p className="text-green-700 text-xs">Click on the graph or use "Add Point" button</p>
             </div>
           </div>
           <div className="flex items-start space-x-2">
@@ -327,7 +327,7 @@ function SimpleLinearRegression() {
               onClick={addRandomPoint}
               className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
             >
-              ➕ Add Random Point
+              ➕ Add Point
             </button>
             <button
               onClick={() => loadPreset('linear')}

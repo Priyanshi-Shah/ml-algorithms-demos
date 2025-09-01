@@ -33,14 +33,44 @@ function HomePage() {
       ],
       difficulty: 'Intermediate',
       status: 'ready'
+    },
+    {
+      id: 'logistic-regression',
+      title: 'Logistic Regression',
+      description: 'Master binary classification with sigmoid curves. See how probabilities map to decisions in real-time.',
+      path: '/logistic-regression',
+      color: 'from-green-500 to-green-600',
+      features: [
+        'Sigmoid curve visualization',
+        'Binary classification',
+        'Probability estimation',
+        'Maximum likelihood learning'
+      ],
+      difficulty: 'Intermediate',
+      status: 'ready'
+    },
+    {
+      id: 'svm',
+      title: 'Support Vector Machine',
+      description: 'Explore optimal decision boundaries and margin maximization. Understand kernels and support vectors.',
+      path: '/svm',
+      color: 'from-red-500 to-red-600',
+      features: [
+        'Hyperplane visualization',
+        'Support vector identification',
+        'Kernel trick demonstration',
+        'Margin maximization'
+      ],
+      difficulty: 'Advanced',
+      status: 'ready'
     }
   ];
 
   const upcomingAlgorithms = [
-    { title: 'Support Vector Machine', status: 'coming-soon' },
     { title: 'K-Nearest Neighbors', status: 'coming-soon' },
-    { title: 'Logistic Regression', status: 'coming-soon' },
-    { title: 'Decision Trees', status: 'coming-soon' }
+    { title: 'Decision Trees', status: 'coming-soon' },
+    { title: 'Random Forest', status: 'coming-soon' },
+    { title: 'Neural Networks', status: 'coming-soon' }
   ];
 
   return (
@@ -71,7 +101,7 @@ function HomePage() {
       </div>
 
       {/* Main Algorithms Grid */}
-      <div className="grid md:grid-cols-2 gap-8 mb-16">
+      <div className="grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-8 mb-16">
         {algorithms.map((algorithm) => (
           <Link
             key={algorithm.id}
@@ -83,14 +113,18 @@ function HomePage() {
               <div className="flex items-center justify-between mb-6">
                 <div className={`p-4 rounded-xl bg-gradient-to-r ${algorithm.color} text-white group-hover:scale-110 transition-transform`}>
                   <div className="w-8 h-8 flex items-center justify-center text-2xl">
-                    {algorithm.id === 'linear-regression' ? '📈' : '🎯'}
+                    {algorithm.id === 'linear-regression' ? '📈' : 
+                     algorithm.id === 'kmeans' ? '🎯' : 
+                     algorithm.id === 'logistic-regression' ? '📊' : '🎯'}
                   </div>
                 </div>
                 <div className="text-right">
                   <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
                     algorithm.difficulty === 'Beginner' 
                       ? 'bg-green-100 text-green-800' 
-                      : 'bg-orange-100 text-orange-800'
+                      : algorithm.difficulty === 'Intermediate'
+                      ? 'bg-orange-100 text-orange-800'
+                      : 'bg-red-100 text-red-800'
                   }`}>
                     {algorithm.difficulty}
                   </span>
