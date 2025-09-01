@@ -4,11 +4,13 @@ Interactive web-based demonstrations of popular machine learning algorithms buil
 
 ## 🚀 Live Demo
 
+**[🌐 View Live Demo](https://priyanshi-shah.github.io/ml-algorithms-demos/)**
+
 Access the interactive demos directly:
 
-- **[Homepage](http://localhost:3000/ml-algorithms-demos)** - Overview of all available algorithms
-- **[Linear Regression](http://localhost:3000/ml-algorithms-demos/#/linear-regression)** - Interactive linear regression demo with customizable parameters
-- **[K-Means Clustering](http://localhost:3000/ml-algorithms-demos/#/kmeans)** - Visualize K-means clustering algorithm in real-time
+- **[Homepage](https://priyanshi-shah.github.io/ml-algorithms-demos/)** - Overview of all available algorithms
+- **[Linear Regression](https://priyanshi-shah.github.io/ml-algorithms-demos/#/linear-regression)** - Interactive linear regression demo with customizable parameters
+- **[K-Means Clustering](https://priyanshi-shah.github.io/ml-algorithms-demos/#/kmeans)** - Visualize K-means clustering algorithm in real-time
 
 ## 🎯 Features
 
