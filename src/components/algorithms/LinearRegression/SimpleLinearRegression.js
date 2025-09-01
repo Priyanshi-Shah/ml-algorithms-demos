@@ -1,16 +1,18 @@
 // src/components/algorithms/LinearRegression/SimpleLinearRegression.js - OPTIMIZED
-import React, { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
 
 function SimpleLinearRegression() {
   const [points, setPoints] = useState([
-    { x: 2, y: 3 },
-    { x: 4, y: 5 },
-    { x: 6, y: 7 },
-    { x: 8, y: 9 }
+    { x: 2, y: 3, id: 1 },
+    { x: 4, y: 5, id: 2 },
+    { x: 6, y: 7, id: 3 },
+    { x: 8, y: 9, id: 4 }
   ]);
   
   const [showTooltip, setShowTooltip] = useState(false);
+  const [cursorTooltip, setCursorTooltip] = useState({ show: false, x: 0, y: 0 });
+  const [newestPointId, setNewestPointId] = useState(null);
 
   // Memoize regression calculation for better performance
   const regressionLine = useMemo(() => {
@@ -36,107 +38,106 @@ function SimpleLinearRegression() {
     return { slope, intercept, rSquared };
   }, [points]);
 
-  // Optimized chart data generation - MUCH fewer points
-  const chartData = useMemo(() => {
-    if (points.length < 2) {
-      return points.map(point => ({
-        x: point.x,
-        actualY: point.y,
-        regressionY: null
-      }));
-    }
-
-    // Create a combined dataset with just data points + minimal regression line points
-    const allData = [...points.map(point => ({
+  // Separate data for dots (never changes unless points actually change)
+  const dotsData = useMemo(() => {
+    return points.map(point => ({
       x: point.x,
       actualY: point.y,
-      regressionY: regressionLine.slope * point.x + regressionLine.intercept
-    }))];
+      id: point.id,
+      isNewest: point.id === newestPointId
+    }));
+  }, [points, newestPointId]);
 
-    // Add ONLY start and end points for regression line (no intermediate points)
-    const minX = 0;
-    const maxX = 15;
+  // Regression line data (only for the line, independent of dots)
+  const regressionData = useMemo(() => {
+    if (points.length < 2) return [];
     
-    // Only add start/end points if they're not already data points
-    if (!points.some(p => Math.abs(p.x - minX) < 0.1)) {
-      allData.push({
-        x: minX,
-        actualY: null,
-        regressionY: regressionLine.slope * minX + regressionLine.intercept
-      });
-    }
-    
-    if (!points.some(p => Math.abs(p.x - maxX) < 0.1)) {
-      allData.push({
-        x: maxX,
-        actualY: null,
-        regressionY: regressionLine.slope * maxX + regressionLine.intercept
-      });
-    }
-
-    return allData.sort((a, b) => a.x - b.x);
-  }, [points, regressionLine]);
+    // Just two points to draw the regression line
+    return [
+      {
+        x: 0,
+        regressionY: regressionLine.slope * 0 + regressionLine.intercept
+      },
+      {
+        x: 15,
+        regressionY: regressionLine.slope * 15 + regressionLine.intercept
+      }
+    ];
+  }, [regressionLine, points.length]);
 
   function addRandomPoint() {
     const newX = Math.round((Math.random() * 12 + 1) * 2) / 2;
     const newY = Math.round((Math.random() * 12 + 1) * 2) / 2;
-    setPoints(prev => [...prev, { x: newX, y: newY }]);
+    const newId = Date.now();
+    setPoints(prev => [...prev, { x: newX, y: newY, id: newId }]);
+    setNewestPointId(newId);
   }
 
   function addPointAtPosition(x, y) {
+    const newId = Date.now();
     const newPoint = {
       x: Math.max(0, Math.min(15, Math.round(x * 2) / 2)),
-      y: Math.max(0, Math.min(15, Math.round(y * 2) / 2))
+      y: Math.max(0, Math.min(15, Math.round(y * 2) / 2)),
+      id: newId
     };
     setPoints(prev => [...prev, newPoint]);
+    setNewestPointId(newId);
   }
 
   function loadPreset(preset) {
     const presets = {
       linear: [
-        { x: 1, y: 2 },
-        { x: 3, y: 4 },
-        { x: 5, y: 6 },
-        { x: 7, y: 8 },
-        { x: 9, y: 10 }
+        { x: 1, y: 2, id: 101 },
+        { x: 3, y: 4, id: 102 },
+        { x: 5, y: 6, id: 103 },
+        { x: 7, y: 8, id: 104 },
+        { x: 9, y: 10, id: 105 }
       ],
       scattered: [
-        { x: 2, y: 3 },
-        { x: 4, y: 7 },
-        { x: 6, y: 5 },
-        { x: 8, y: 11 },
-        { x: 10, y: 9 }
+        { x: 2, y: 3, id: 201 },
+        { x: 4, y: 7, id: 202 },
+        { x: 6, y: 5, id: 203 },
+        { x: 8, y: 11, id: 204 },
+        { x: 10, y: 9, id: 205 }
       ],
       noCorrelation: [
-        { x: 2, y: 8 },
-        { x: 4, y: 3 },
-        { x: 6, y: 12 },
-        { x: 8, y: 5 },
-        { x: 10, y: 9 }
+        { x: 2, y: 8, id: 301 },
+        { x: 4, y: 3, id: 302 },
+        { x: 6, y: 12, id: 303 },
+        { x: 8, y: 5, id: 304 },
+        { x: 10, y: 9, id: 305 }
       ]
     };
     setPoints(presets[preset]);
+    setNewestPointId(null); // Clear newest point tracking when loading presets
   }
 
   function clearPoints() {
     setPoints([]);
+    setNewestPointId(null);
   }
 
   function removePoint(index) {
+    const pointToRemove = points[index];
     setPoints(prev => prev.filter((_, i) => i !== index));
+    // Clear newest point tracking if we're removing the newest point
+    if (pointToRemove && pointToRemove.id === newestPointId) {
+      setNewestPointId(null);
+    }
   }
 
   // Simple dot component for data points
   const CustomDot = (props) => {
     const { cx, cy, payload } = props;
     if (payload && payload.actualY !== null && payload.actualY !== undefined) {
+      const isNewest = payload.isNewest;
       return (
         <circle
           cx={cx}
           cy={cy}
           r={5}
-          fill="#3b82f6"
-          stroke="#1d4ed8"
+          fill={isNewest ? "#FFB6C1" : "#3b82f6"}
+          stroke={isNewest ? "#FF91A4" : "#1d4ed8"}
           strokeWidth={2}
         />
       );
@@ -161,53 +162,91 @@ function SimpleLinearRegression() {
             
             {showTooltip && (
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4 text-sm text-blue-800">
-                💡 <strong>How to use:</strong> Add data points using the controls below. 
+                💡 <strong>How to use:</strong> Click anywhere on the graph to add points, or use the controls below. 
                 Watch how the red regression line automatically adjusts to best fit your data!
               </div>
             )}
 
-            <ResponsiveContainer width="100%" height={400}>
-              <LineChart data={chartData} margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-                <XAxis 
-                  type="number" 
-                  dataKey="x" 
-                  domain={[0, 15]} 
-                  label={{ value: 'X Values', position: 'insideBottom', offset: -10 }}
-                />
-                <YAxis 
-                  type="number" 
-                  domain={[0, 15]}
-                  label={{ value: 'Y Values', angle: -90, position: 'insideLeft' }}
-                />
-                
-                {/* Regression line - simple and fast */}
-                {points.length >= 2 && (
-                  <Line 
-                    type="linear" 
-                    dataKey="regressionY" 
-                    stroke="#ef4444" 
-                    strokeWidth={3}
-                    dot={false}
-                    connectNulls={false}
-                    strokeDasharray="0"
+            <div 
+              className="relative cursor-crosshair"
+              onClick={(e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                const x = ((e.clientX - rect.left - 20) / (rect.width - 40)) * 15;
+                const y = 15 - ((e.clientY - rect.top - 20) / (rect.height - 40)) * 15;
+                if (x >= 0 && x <= 15 && y >= 0 && y <= 15) {
+                  addPointAtPosition(x, y);
+                }
+              }}
+              onMouseMove={(e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                setCursorTooltip({
+                  show: true,
+                  x: e.clientX - rect.left,
+                  y: e.clientY - rect.top
+                });
+              }}
+              onMouseLeave={() => {
+                setCursorTooltip({ show: false, x: 0, y: 0 });
+              }}
+            >
+              <ResponsiveContainer width="100%" height={400}>
+                <LineChart 
+                  data={[...dotsData, ...regressionData]}
+                  margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
+                  <XAxis 
+                    type="number" 
+                    dataKey="x" 
+                    domain={[0, 15]} 
+                    label={{ value: 'X Values', position: 'insideBottom', offset: -10 }}
                   />
-                )}
-                
-                {/* Data points - only actual points */}
-                <Line 
-                  type="monotone" 
-                  dataKey="actualY" 
-                  stroke="transparent"
-                  dot={<CustomDot />}
-                  line={false}
-                  connectNulls={false}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
+                  <YAxis 
+                    type="number" 
+                    domain={[0, 15]}
+                    label={{ value: 'Y Values', angle: -90, position: 'insideLeft' }}
+                  />
+                  
+                  {/* Regression line */}
+                  {points.length >= 2 && (
+                    <Line 
+                      type="linear" 
+                      dataKey="regressionY" 
+                      stroke="#ef4444" 
+                      strokeWidth={3}
+                      dot={false}
+                      connectNulls={false}
+                    />
+                  )}
+                  
+                  {/* Data points */}
+                  <Line 
+                    type="monotone" 
+                    dataKey="actualY" 
+                    stroke="transparent"
+                    dot={<CustomDot />}
+                    line={false}
+                    connectNulls={false}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            
+            {/* Cursor tooltip */}
+            {cursorTooltip.show && (
+              <div 
+                className="absolute pointer-events-none bg-gray-800 text-white text-xs px-2 py-1 rounded shadow-lg z-10"
+                style={{
+                  left: cursorTooltip.x + 10,
+                  top: cursorTooltip.y - 30,
+                  transform: cursorTooltip.x > 300 ? 'translateX(-100%)' : 'none'
+                }}
+              >
+                ➕ Add data point
+              </div>
+            )}
+            </div>
 
-          <div className="flex flex-wrap gap-3 mt-4">
+            <div className="flex flex-wrap gap-3 mt-4">
             <button
               onClick={addRandomPoint}
               className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
@@ -306,6 +345,7 @@ function SimpleLinearRegression() {
                 Add
               </button>
             </div>
+          </div>
           </div>
         </div>
 

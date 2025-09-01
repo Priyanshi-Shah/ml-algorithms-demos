@@ -10,6 +10,9 @@ function StandardKMeans() {
   const [iteration, setIteration] = useState(0);
   const [converged, setConverged] = useState(false);
   const [speed, setSpeed] = useState(1000);
+  const [cursorTooltip, setCursorTooltip] = useState({ show: false, x: 0, y: 0 });
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [newestPointId, setNewestPointId] = useState(null);
 
   // Colors for different clusters
   const colors = ['#3B82F6', '#EF4444', '#10B981', '#F59E0B', '#8B5CF6', '#EC4899'];
@@ -31,6 +34,7 @@ function StandardKMeans() {
       });
     }
     setPoints(newPoints);
+    setNewestPointId(null); // Clear newest point tracking when generating new dataset
   };
 
   // Initialize random centroids
@@ -110,6 +114,7 @@ function StandardKMeans() {
     setCentroids(newCentroids);
     setIteration(prev => prev + 1);
     setConverged(hasConverged);
+    setNewestPointId(null); // Clear newest point tracking when algorithm runs
 
     if (hasConverged) {
       setIsRunning(false);
@@ -130,12 +135,24 @@ function StandardKMeans() {
 
     // Add points
     points.forEach(point => {
+      let fillColor;
+      if (point.id === newestPointId) {
+        // Newest point is always baby pink until algorithm runs
+        fillColor = '#FFB6C1';
+      } else if (point.cluster >= 0) {
+        // Assigned points use cluster colors
+        fillColor = colors[point.cluster % colors.length];
+      } else {
+        // Other unassigned points use gray
+        fillColor = '#6B7280';
+      }
+      
       allData.push({
         x: point.x,
         y: point.y,
         type: 'point',
         cluster: point.cluster,
-        fill: point.cluster >= 0 ? colors[point.cluster % colors.length] : '#6B7280'
+        fill: fillColor
       });
     });
 
@@ -156,6 +173,27 @@ function StandardKMeans() {
   const chartData = generateChartData();
   const pointData = chartData.filter(d => d.type === 'point');
   const centroidData = chartData.filter(d => d.type === 'centroid');
+
+  // Add point at position
+  const addPointAtPosition = (x, y) => {
+    const newPointId = Date.now(); // Use timestamp as unique ID
+    const newPoint = {
+      x: Math.max(1, Math.min(14, Math.round(x * 2) / 2)),
+      y: Math.max(1, Math.min(14, Math.round(y * 2) / 2)),
+      cluster: -1,
+      id: newPointId
+    };
+    setPoints(prev => [...prev, newPoint]);
+    setNewestPointId(newPointId); // Track the newest point
+    setConverged(false); // Reset convergence when adding new points
+  };
+
+  // Add random point
+  const addRandomPoint = () => {
+    const newX = Math.round((Math.random() * 12 + 1) * 2) / 2;
+    const newY = Math.round((Math.random() * 12 + 1) * 2) / 2;
+    addPointAtPosition(newX, newY);
+  };
 
   // Preset datasets
   const loadPreset = (preset) => {
@@ -207,6 +245,7 @@ function StandardKMeans() {
     }
     
     setPoints(newPoints);
+    setNewestPointId(null); // Clear newest point tracking when loading presets
   };
 
   // Custom dot components
@@ -259,7 +298,15 @@ function StandardKMeans() {
         <div className="lg:col-span-3">
           <div className="bg-gray-50 rounded-lg p-4">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-semibold text-gray-800">Clustering Visualization</h3>
+              <div className="flex items-center gap-3">
+                <h3 className="text-xl font-semibold text-gray-800">Clustering Visualization</h3>
+                <button
+                  onClick={() => setShowTooltip(!showTooltip)}
+                  className="text-blue-600 hover:text-blue-800 text-lg"
+                >
+                  ℹ️
+                </button>
+              </div>
               <div className="flex items-center gap-2">
                 <span className="text-sm text-gray-600">Iteration: {iteration}</span>
                 {converged && (
@@ -269,36 +316,80 @@ function StandardKMeans() {
                 )}
               </div>
             </div>
+            
+            {showTooltip && (
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4 text-sm text-blue-800">
+                💡 <strong>How to use:</strong> Click anywhere on the graph to add data points! 
+                Watch how the K-means algorithm groups your points into clusters.
+              </div>
+            )}
 
-            <ResponsiveContainer width="100%" height={500}>
-              <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-                <XAxis 
-                  type="number" 
-                  dataKey="x" 
-                  domain={[0, 15]} 
-                  label={{ value: 'X Coordinate', position: 'insideBottom', offset: -10 }}
-                />
-                <YAxis 
-                  type="number" 
-                  dataKey="y"
-                  domain={[0, 15]}
-                  label={{ value: 'Y Coordinate', angle: -90, position: 'insideLeft' }}
-                />
-                
-                {/* Data Points */}
-                <Scatter 
-                  data={pointData} 
-                  dot={<CustomPointDot />}
-                />
-                
-                {/* Centroids */}
-                <Scatter 
-                  data={centroidData} 
-                  dot={<CustomCentroidDot />}
-                />
-              </ScatterChart>
-            </ResponsiveContainer>
+            <div 
+              className="relative cursor-crosshair"
+              onClick={(e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                const x = ((e.clientX - rect.left - 20) / (rect.width - 40)) * 15;
+                const y = 15 - ((e.clientY - rect.top - 20) / (rect.height - 40)) * 15;
+                if (x >= 0 && x <= 15 && y >= 0 && y <= 15) {
+                  addPointAtPosition(x, y);
+                }
+              }}
+              onMouseMove={(e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                setCursorTooltip({
+                  show: true,
+                  x: e.clientX - rect.left,
+                  y: e.clientY - rect.top
+                });
+              }}
+              onMouseLeave={() => {
+                setCursorTooltip({ show: false, x: 0, y: 0 });
+              }}
+            >
+              <ResponsiveContainer width="100%" height={500}>
+                <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
+                  <XAxis 
+                    type="number" 
+                    dataKey="x" 
+                    domain={[0, 15]} 
+                    label={{ value: 'X Coordinate', position: 'insideBottom', offset: -10 }}
+                  />
+                  <YAxis 
+                    type="number" 
+                    dataKey="y"
+                    domain={[0, 15]}
+                    label={{ value: 'Y Coordinate', angle: -90, position: 'insideLeft' }}
+                  />
+                  
+                  {/* Data Points */}
+                  <Scatter 
+                    data={pointData} 
+                    dot={<CustomPointDot />}
+                  />
+                  
+                  {/* Centroids */}
+                  <Scatter 
+                    data={centroidData} 
+                    dot={<CustomCentroidDot />}
+                  />
+                </ScatterChart>
+              </ResponsiveContainer>
+              
+              {/* Cursor tooltip */}
+              {cursorTooltip.show && (
+                <div 
+                  className="absolute pointer-events-none bg-gray-800 text-white text-xs px-2 py-1 rounded shadow-lg z-10"
+                  style={{
+                    left: cursorTooltip.x + 10,
+                    top: cursorTooltip.y - 30,
+                    transform: cursorTooltip.x > 400 ? 'translateX(-100%)' : 'none'
+                  }}
+                >
+                  ➕ Add data point
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Controls */}
@@ -332,10 +423,17 @@ function StandardKMeans() {
               </button>
 
               <button
+                onClick={addRandomPoint}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
+              >
+                ➕ Add Point
+              </button>
+
+              <button
                 onClick={() => generateRandomPoints(50)}
                 className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 flex items-center gap-2"
               >
-                ➕ New Data
+                🔄 New Dataset
               </button>
             </div>
 
@@ -436,8 +534,16 @@ function StandardKMeans() {
             <h4 className="text-lg font-semibold text-gray-800 mb-3">Legend</h4>
             <div className="space-y-2">
               <div className="flex items-center gap-2">
+                <div className="w-4 h-4 rounded-full border border-white" style={{ backgroundColor: '#FFB6C1' }}></div>
+                <span className="text-sm">Newest Point</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 rounded-full bg-gray-500 border border-white"></div>
+                <span className="text-sm">Unassigned Points</span>
+              </div>
+              <div className="flex items-center gap-2">
                 <div className="w-4 h-4 rounded-full bg-blue-500 border border-white"></div>
-                <span className="text-sm">Data Points</span>
+                <span className="text-sm">Clustered Points</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-6 h-6 rounded-full bg-red-500 border-2 border-black flex items-center justify-center">
@@ -446,7 +552,7 @@ function StandardKMeans() {
                 <span className="text-sm">Centroids</span>
               </div>
               <p className="text-xs text-gray-600 mt-2">
-                Colors represent different clusters. Centroids move to the center of their assigned points.
+                The newest point stays baby pink until the algorithm runs. Colors represent different clusters.
               </p>
             </div>
           </div>
