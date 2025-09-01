@@ -1,5 +1,5 @@
-// src/components/algorithms/LinearRegression/SimpleLinearRegression.js
-import React, { useState, useEffect } from 'react';
+// src/components/algorithms/LinearRegression/SimpleLinearRegression.js - OPTIMIZED
+import React, { useState, useEffect, useMemo } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
 
 function SimpleLinearRegression() {
@@ -10,71 +10,77 @@ function SimpleLinearRegression() {
     { x: 8, y: 9 }
   ]);
   
-  const [regressionLine, setRegressionLine] = useState({ slope: 0, intercept: 0, rSquared: 0 });
   const [showTooltip, setShowTooltip] = useState(false);
 
-  function calculateRegression(data) {
-    const n = data.length;
+  // Memoize regression calculation for better performance
+  const regressionLine = useMemo(() => {
+    const n = points.length;
     if (n < 2) return { slope: 0, intercept: 0, rSquared: 0 };
     
-    const sumX = data.reduce((sum, point) => sum + point.x, 0);
-    const sumY = data.reduce((sum, point) => sum + point.y, 0);
-    const sumXY = data.reduce((sum, point) => sum + point.x * point.y, 0);
-    const sumXX = data.reduce((sum, point) => sum + point.x * point.x, 0);
+    const sumX = points.reduce((sum, point) => sum + point.x, 0);
+    const sumY = points.reduce((sum, point) => sum + point.y, 0);
+    const sumXY = points.reduce((sum, point) => sum + point.x * point.y, 0);
+    const sumXX = points.reduce((sum, point) => sum + point.x * point.x, 0);
     
     const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
     const intercept = (sumY - slope * sumX) / n;
     
     const yMean = sumY / n;
-    const ssTotal = data.reduce((sum, point) => sum + Math.pow(point.y - yMean, 2), 0);
-    const ssResidual = data.reduce((sum, point) => {
+    const ssTotal = points.reduce((sum, point) => sum + Math.pow(point.y - yMean, 2), 0);
+    const ssResidual = points.reduce((sum, point) => {
       const predicted = slope * point.x + intercept;
       return sum + Math.pow(point.y - predicted, 2);
     }, 0);
     const rSquared = ssTotal > 0 ? 1 - (ssResidual / ssTotal) : 0;
     
     return { slope, intercept, rSquared };
-  }
-
-  useEffect(() => {
-    setRegressionLine(calculateRegression(points));
   }, [points]);
 
-  function generateChartData() {
-    const allData = [];
-    
-    points.forEach(point => {
-      allData.push({
+  // Optimized chart data generation - MUCH fewer points
+  const chartData = useMemo(() => {
+    if (points.length < 2) {
+      return points.map(point => ({
         x: point.x,
         actualY: point.y,
-        regressionY: points.length >= 2 ? regressionLine.slope * point.x + regressionLine.intercept : null,
-        isDataPoint: true
-      });
-    });
+        regressionY: null
+      }));
+    }
 
-    if (points.length >= 2) {
-      const minX = Math.min(...points.map(p => p.x)) - 1;
-      const maxX = Math.max(...points.map(p => p.x)) + 1;
-      
-      for (let x = minX; x <= maxX; x += 0.5) {
-        if (!points.some(p => Math.abs(p.x - x) < 0.1)) {
-          allData.push({
-            x: x,
-            actualY: null,
-            regressionY: regressionLine.slope * x + regressionLine.intercept,
-            isDataPoint: false
-          });
-        }
-      }
+    // Create a combined dataset with just data points + minimal regression line points
+    const allData = [...points.map(point => ({
+      x: point.x,
+      actualY: point.y,
+      regressionY: regressionLine.slope * point.x + regressionLine.intercept
+    }))];
+
+    // Add ONLY start and end points for regression line (no intermediate points)
+    const minX = 0;
+    const maxX = 15;
+    
+    // Only add start/end points if they're not already data points
+    if (!points.some(p => Math.abs(p.x - minX) < 0.1)) {
+      allData.push({
+        x: minX,
+        actualY: null,
+        regressionY: regressionLine.slope * minX + regressionLine.intercept
+      });
+    }
+    
+    if (!points.some(p => Math.abs(p.x - maxX) < 0.1)) {
+      allData.push({
+        x: maxX,
+        actualY: null,
+        regressionY: regressionLine.slope * maxX + regressionLine.intercept
+      });
     }
 
     return allData.sort((a, b) => a.x - b.x);
-  }
+  }, [points, regressionLine]);
 
   function addRandomPoint() {
     const newX = Math.round((Math.random() * 12 + 1) * 2) / 2;
     const newY = Math.round((Math.random() * 12 + 1) * 2) / 2;
-    setPoints([...points, { x: newX, y: newY }]);
+    setPoints(prev => [...prev, { x: newX, y: newY }]);
   }
 
   function addPointAtPosition(x, y) {
@@ -82,7 +88,7 @@ function SimpleLinearRegression() {
       x: Math.max(0, Math.min(15, Math.round(x * 2) / 2)),
       y: Math.max(0, Math.min(15, Math.round(y * 2) / 2))
     };
-    setPoints([...points, newPoint]);
+    setPoints(prev => [...prev, newPoint]);
   }
 
   function loadPreset(preset) {
@@ -117,20 +123,18 @@ function SimpleLinearRegression() {
   }
 
   function removePoint(index) {
-    const newPoints = points.filter((_, i) => i !== index);
-    setPoints(newPoints);
+    setPoints(prev => prev.filter((_, i) => i !== index));
   }
 
-  const chartData = generateChartData();
-
+  // Simple dot component for data points
   const CustomDot = (props) => {
     const { cx, cy, payload } = props;
-    if (payload && payload.isDataPoint && payload.actualY !== null) {
+    if (payload && payload.actualY !== null && payload.actualY !== undefined) {
       return (
         <circle
           cx={cx}
           cy={cy}
-          r={6}
+          r={5}
           fill="#3b82f6"
           stroke="#1d4ed8"
           strokeWidth={2}
@@ -149,7 +153,7 @@ function SimpleLinearRegression() {
               <h3 className="text-xl font-semibold text-gray-800">Interactive Visualization</h3>
               <button
                 onClick={() => setShowTooltip(!showTooltip)}
-                className="text-blue-600 hover:text-blue-800"
+                className="text-blue-600 hover:text-blue-800 text-lg"
               >
                 ℹ️
               </button>
@@ -177,25 +181,28 @@ function SimpleLinearRegression() {
                   label={{ value: 'Y Values', angle: -90, position: 'insideLeft' }}
                 />
                 
-                <Line 
-                  type="monotone" 
-                  dataKey="actualY" 
-                  stroke="none"
-                  dot={<CustomDot />}
-                  line={false}
-                  connectNulls={false}
-                />
-                
+                {/* Regression line - simple and fast */}
                 {points.length >= 2 && (
                   <Line 
-                    type="monotone" 
+                    type="linear" 
                     dataKey="regressionY" 
                     stroke="#ef4444" 
                     strokeWidth={3}
                     dot={false}
                     connectNulls={false}
+                    strokeDasharray="0"
                   />
                 )}
+                
+                {/* Data points - only actual points */}
+                <Line 
+                  type="monotone" 
+                  dataKey="actualY" 
+                  stroke="transparent"
+                  dot={<CustomDot />}
+                  line={false}
+                  connectNulls={false}
+                />
               </LineChart>
             </ResponsiveContainer>
           </div>
