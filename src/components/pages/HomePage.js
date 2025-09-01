@@ -149,7 +149,7 @@ function HomePage() {
           }}
         ></div>
         
-        <div className="relative max-w-7xl mx-auto px-4 py-8">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Hero Section */}
           <div className="text-center mb-4">
             {/* Main Heading with Tech Styling */}
@@ -158,7 +158,7 @@ function HomePage() {
                 <span className="mr-2">🤖</span>AI with Pri
               </div>
               
-              <h1 className="text-6xl md:text-7xl font-black mb-6 bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 bg-clip-text text-transparent leading-tight">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-6 bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 bg-clip-text text-transparent leading-tight">
                 Interactive ML
                 <br />
                 <span className="flex items-center justify-center gap-4">
@@ -168,7 +168,7 @@ function HomePage() {
               </h1>
               
               <div className="max-w-4xl mx-auto">
-                <p className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed">
+                <p className="text-lg sm:text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed px-4">
                   Master machine learning through <span className="text-cyan-400 font-semibold">interactive visualizations</span>. 
                   Watch algorithms work step-by-step, adjust parameters in real-time, and decode the math behind AI.
                 </p>
@@ -176,7 +176,7 @@ function HomePage() {
             </div>
             
             {/* Tech Features */}
-            <div className="grid md:grid-cols-3 gap-6 mb-12 max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 max-w-4xl mx-auto">
               <div className="bg-black/20 backdrop-blur-sm border border-cyan-500/20 rounded-xl p-6 hover:border-cyan-500/40 transition-all duration-300">
                 <div className="text-3xl mb-3">⚡</div>
                 <h3 className="text-cyan-400 font-bold mb-2">Real-time Execution</h3>
@@ -229,26 +229,26 @@ function HomePage() {
       </div>
 
       {/* Algorithms Section */}
-      <div className="bg-gray-50 py-20">
-        <div className="max-w-7xl mx-auto px-4">
+      <div className="bg-gray-50 py-12 sm:py-16 lg:py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Choose Your Algorithm</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Choose Your Algorithm</h2>
+            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto px-4">
               Dive into interactive machine learning algorithms. Each demo includes real-time visualizations, 
               parameter controls, and comprehensive explanations.
             </p>
           </div>
 
           {/* Main Algorithms Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-8 mb-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
             {algorithms.map((algorithm) => (
               <Link
                 key={algorithm.id}
                 to={algorithm.path}
                 className="group block bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100 hover:border-gray-200 overflow-hidden"
               >
-                <div className="p-8">
+                <div className="p-6 sm:p-8">
                   <div className="flex items-center justify-between mb-6">
                     <div className={`p-4 rounded-xl bg-gradient-to-r ${algorithm.color} text-white group-hover:scale-110 transition-transform`}>
                       <div className="w-8 h-8 flex items-center justify-center text-2xl">
@@ -300,16 +300,16 @@ function HomePage() {
           </div>
 
         {/* Essential ML Concepts Section */}
-        <div className="mb-20">
+        <div className="mb-12 sm:mb-16 lg:mb-20">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Essential ML Concepts</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Essential ML Concepts</h2>
+            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto px-4">
               Master the fundamental concepts that every ML practitioner should know. 
               Interactive explanations of core principles and techniques.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-8 mb-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
             {essentialConcepts.map((concept) => {
               const isReady = concept.status === 'ready';
               const Component = isReady ? Link : 'div';
@@ -324,7 +324,7 @@ function HomePage() {
               
               return (
                 <Component key={concept.id} {...props}>
-                <div className="p-8">
+                <div className="p-6 sm:p-8">
                   <div className="flex items-center justify-between mb-6">
                     <div className={`p-4 rounded-xl bg-gradient-to-r ${concept.color} text-white ${isReady ? 'group-hover:scale-110' : ''} transition-transform`}>
                       <div className="w-8 h-8 flex items-center justify-center text-2xl">
@@ -394,7 +394,7 @@ function HomePage() {
             <p className="text-gray-600">Additional algorithms being developed for interactive learning</p>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
             {upcomingAlgorithms.map((algorithm, index) => (
               <div key={index} className="bg-white rounded-lg p-4 text-center">
                 <h4 className="font-medium text-gray-700 mb-2">{algorithm.title}</h4>

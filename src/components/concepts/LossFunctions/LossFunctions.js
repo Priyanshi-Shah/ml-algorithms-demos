@@ -103,7 +103,7 @@ function LossFunctions() {
           <span className="text-2xl mr-2">🎯</span>
           Getting Started Guide
         </h3>
-        <div className="grid md:grid-cols-2 gap-4 text-sm">
+        <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-4 text-sm">
           <div>
             <h4 className="font-medium text-gray-800 mb-2">📊 How to Use:</h4>
             <ol className="space-y-1 text-gray-600 list-decimal list-inside">
@@ -132,7 +132,7 @@ function LossFunctions() {
           Interactive Controls
         </h3>
         
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="space-y-4">
             <div>
               <div className="flex justify-between items-center mb-2">
@@ -150,7 +150,7 @@ function LossFunctions() {
                 step="0.1"
                 value={actualValue}
                 onChange={(e) => setActualValue(parseFloat(e.target.value))}
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                className="w-full h-3 sm:h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer touch-manipulation"
               />
               <div className="text-xs text-gray-500 mt-1">
                 The true target value your model should predict
@@ -173,7 +173,7 @@ function LossFunctions() {
                 step="0.1"
                 value={predictedValue}
                 onChange={(e) => setPredictedValue(parseFloat(e.target.value))}
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                className="w-full h-3 sm:h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer touch-manipulation"
               />
               <div className="text-xs text-gray-500 mt-1">
                 What your model actually predicts
@@ -206,10 +206,10 @@ function LossFunctions() {
       </div>
 
       {/* Loss Function Visualization - Moved to top */}
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         <div className="bg-white rounded-lg border p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Loss vs Prediction</h3>
-          <ResponsiveContainer width="100%" height={300}>
+          <ResponsiveContainer width="100%" height={250}>
             <LineChart data={lossData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis 
@@ -262,7 +262,7 @@ function LossFunctions() {
 
         <div className="bg-white rounded-lg border p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Compare All Loss Functions</h3>
-          <ResponsiveContainer width="100%" height={300}>
+          <ResponsiveContainer width="100%" height={250}>
             <LineChart data={comparisonData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis 
@@ -296,12 +296,12 @@ function LossFunctions() {
       {/* Compact Loss Function Selector */}
       <div className="bg-white rounded-lg border p-4">
         <h3 className="text-lg font-semibold text-gray-900 mb-3">Select Loss Function</h3>
-        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
           {Object.entries(lossFunctions).map(([key, func]) => (
             <button
               key={key}
               onClick={() => handleFunctionChange(key)}
-              className={`text-left p-3 rounded-lg border-2 transition-all ${
+              className={`text-left p-3 sm:p-3 rounded-lg border-2 transition-all touch-manipulation ${
                 selectedFunction === key
                   ? 'border-blue-500 bg-blue-50'
                   : 'border-gray-200 hover:border-gray-300'
@@ -322,8 +322,8 @@ function LossFunctions() {
 
       {/* Compact Current Function Details */}
       <div className="bg-white rounded-lg border p-4">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-          <div className="mb-3 md:mb-0">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+          <div className="mb-3 lg:mb-0">
             <h3 className="text-lg font-bold text-gray-900">
               {lossFunctions[selectedFunction].name}
             </h3>
@@ -340,7 +340,7 @@ function LossFunctions() {
       {/* Compact Key Insights */}
       <div className="bg-blue-50 rounded-lg p-4">
         <h3 className="text-lg font-semibold text-gray-900 mb-3">🔍 Key Insights</h3>
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <h4 className="font-medium text-gray-800 mb-2">When to Use Each Loss Function:</h4>
             <ul className="space-y-1 text-sm text-gray-600">
@@ -378,7 +378,7 @@ function LossFunctions() {
               Mean Squared Error (MSE)
             </h3>
             
-            <div className="grid md:grid-cols-2 gap-6 mb-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-4">
               <div>
                 <h4 className="font-semibold text-gray-800 mb-2">📐 Mathematical Definition</h4>
                 <div className="bg-gray-100 rounded-lg p-4 mb-3">
@@ -406,7 +406,7 @@ function LossFunctions() {
               </div>
             </div>
             
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div>
                 <h4 className="font-semibold text-gray-800 mb-2">✅ When to Use MSE</h4>
                 <ul className="text-sm text-gray-600 space-y-1">
@@ -435,7 +435,7 @@ function LossFunctions() {
               Mean Absolute Error (MAE)
             </h3>
             
-            <div className="grid md:grid-cols-2 gap-6 mb-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-4">
               <div>
                 <h4 className="font-semibold text-gray-800 mb-2">📐 Mathematical Definition</h4>
                 <div className="bg-gray-100 rounded-lg p-4 mb-3">
@@ -463,7 +463,7 @@ function LossFunctions() {
               </div>
             </div>
             
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div>
                 <h4 className="font-semibold text-gray-800 mb-2">✅ When to Use MAE</h4>
                 <ul className="text-sm text-gray-600 space-y-1">
@@ -492,7 +492,7 @@ function LossFunctions() {
               Huber Loss
             </h3>
             
-            <div className="grid md:grid-cols-2 gap-6 mb-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-4">
               <div>
                 <h4 className="font-semibold text-gray-800 mb-2">📐 Mathematical Definition</h4>
                 <div className="bg-gray-100 rounded-lg p-4 mb-3">
@@ -525,7 +525,7 @@ function LossFunctions() {
               </div>
             </div>
             
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div>
                 <h4 className="font-semibold text-gray-800 mb-2">✅ When to Use Huber Loss</h4>
                 <ul className="text-sm text-gray-600 space-y-1">
@@ -554,7 +554,7 @@ function LossFunctions() {
               Logistic Loss (Log Loss)
             </h3>
             
-            <div className="grid md:grid-cols-2 gap-6 mb-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-4">
               <div>
                 <h4 className="font-semibold text-gray-800 mb-2">📐 Mathematical Definition</h4>
                 <div className="bg-gray-100 rounded-lg p-4 mb-3">
@@ -584,7 +584,7 @@ function LossFunctions() {
               </div>
             </div>
             
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div>
                 <h4 className="font-semibold text-gray-800 mb-2">✅ When to Use Log Loss</h4>
                 <ul className="text-sm text-gray-600 space-y-1">
@@ -613,7 +613,7 @@ function LossFunctions() {
               Hinge Loss
             </h3>
             
-            <div className="grid md:grid-cols-2 gap-6 mb-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-4">
               <div>
                 <h4 className="font-semibold text-gray-800 mb-2">📐 Mathematical Definition</h4>
                 <div className="bg-gray-100 rounded-lg p-4 mb-3">
@@ -643,7 +643,7 @@ function LossFunctions() {
               </div>
             </div>
             
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div>
                 <h4 className="font-semibold text-gray-800 mb-2">✅ When to Use Hinge Loss</h4>
                 <ul className="text-sm text-gray-600 space-y-1">
