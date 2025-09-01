@@ -408,16 +408,104 @@ function SimpleLinearRegression() {
       </div>
 
       <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6">
-        <h4 className="text-xl font-semibold text-gray-800 mb-4">How Simple Linear Regression Works</h4>
-        <div className="grid md:grid-cols-2 gap-6 text-sm text-gray-700">
-          <div>
-            <h5 className="font-semibold text-blue-800 mb-2">The Goal</h5>
-            <p>Find the best-fit line y = mx + b that minimizes the sum of squared errors between predicted and actual values.</p>
+        <h4 className="text-2xl font-bold text-gray-800 mb-6">Understanding Linear Regression</h4>
+        
+        {/* What is Linear Regression */}
+        <div className="mb-6">
+          <h5 className="text-lg font-semibold text-blue-800 mb-3">🎯 What is Linear Regression?</h5>
+          <p className="text-gray-700 mb-3">
+            Linear regression is like <strong>fitting the best straight line</strong> through a scattered set of data points. 
+            Imagine you're trying to predict house prices based on size - linear regression finds the line that best shows this relationship.
+          </p>
+          <p className="text-gray-700">
+            It's a <strong>supervised learning</strong> algorithm that learns from examples (data with known outcomes) to make predictions about new, unseen data.
+          </p>
+        </div>
+
+        {/* How it Works */}
+        <div className="mb-6">
+          <h5 className="text-lg font-semibold text-blue-800 mb-3">⚙️ How Does It Work?</h5>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="bg-white p-4 rounded-lg">
+              <h6 className="font-semibold text-gray-800 mb-2">1. The Line Equation</h6>
+              <p className="text-sm text-gray-700 mb-2">Every line follows: <strong>y = mx + b</strong></p>
+              <ul className="text-sm text-gray-600 space-y-1">
+                <li><strong>m (slope):</strong> How steep the line is</li>
+                <li><strong>b (intercept):</strong> Where line crosses Y-axis</li>
+                <li><strong>Goal:</strong> Find best m and b values</li>
+              </ul>
+            </div>
+            <div className="bg-white p-4 rounded-lg">
+              <h6 className="font-semibold text-gray-800 mb-2">2. Finding the Best Fit</h6>
+              <p className="text-sm text-gray-700 mb-2">Uses <strong>"Least Squares"</strong> method:</p>
+              <ul className="text-sm text-gray-600 space-y-1">
+                <li>• Measures distance from each point to line</li>
+                <li>• Squares these distances (eliminates negatives)</li>
+                <li>• Finds line that minimizes total error</li>
+              </ul>
+            </div>
           </div>
-          <div>
-            <h5 className="font-semibold text-blue-800 mb-2">Key Metrics</h5>
-            <p><strong>Slope (m):</strong> How much Y changes for each unit increase in X<br/>
-            <strong>R²:</strong> Proportion of variance explained (0-1, higher is better)</p>
+        </div>
+
+        {/* Key Concepts */}
+        <div className="mb-6">
+          <h5 className="text-lg font-semibold text-blue-800 mb-3">📊 Key Concepts</h5>
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="bg-white p-3 rounded-lg">
+              <h6 className="font-semibold text-gray-800 text-sm mb-1">R² (R-Squared)</h6>
+              <p className="text-xs text-gray-600">How well the line fits (0-1). Higher = better fit. 0.8+ is usually good.</p>
+            </div>
+            <div className="bg-white p-3 rounded-lg">
+              <h6 className="font-semibold text-gray-800 text-sm mb-1">Slope (m)</h6>
+              <p className="text-xs text-gray-600">For every 1 unit increase in X, Y changes by m units.</p>
+            </div>
+            <div className="bg-white p-3 rounded-lg">
+              <h6 className="font-semibold text-gray-800 text-sm mb-1">Residuals</h6>
+              <p className="text-xs text-gray-600">Vertical distance between each point and the line.</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Real World Applications */}
+        <div className="mb-6">
+          <h5 className="text-lg font-semibold text-blue-800 mb-3">🌍 Real-World Applications</h5>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <ul className="text-sm text-gray-700 space-y-2">
+                <li><strong>📈 Business:</strong> Sales vs advertising spend, revenue forecasting</li>
+                <li><strong>🏠 Real Estate:</strong> House prices vs size, bedrooms, location</li>
+                <li><strong>📚 Education:</strong> Study hours vs exam scores</li>
+              </ul>
+            </div>
+            <div>
+              <ul className="text-sm text-gray-700 space-y-2">
+                <li><strong>🏥 Healthcare:</strong> Drug dosage vs patient response</li>
+                <li><strong>🌡️ Science:</strong> Temperature vs chemical reaction rates</li>
+                <li><strong>💰 Finance:</strong> Risk factors vs stock returns</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* When to Use */}
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="bg-green-50 p-4 rounded-lg border-l-4 border-green-400">
+            <h6 className="font-semibold text-green-800 mb-2">✅ Use Linear Regression When:</h6>
+            <ul className="text-sm text-green-700 space-y-1">
+              <li>• You need to predict a continuous number</li>
+              <li>• The relationship looks roughly linear</li>
+              <li>• You want an interpretable model</li>
+              <li>• You have sufficient data points</li>
+            </ul>
+          </div>
+          <div className="bg-orange-50 p-4 rounded-lg border-l-4 border-orange-400">
+            <h6 className="font-semibold text-orange-800 mb-2">⚠️ Limitations:</h6>
+            <ul className="text-sm text-orange-700 space-y-1">
+              <li>• Only captures linear relationships</li>
+              <li>• Sensitive to outliers</li>
+              <li>• Assumes data follows certain patterns</li>
+              <li>• May oversimplify complex relationships</li>
+            </ul>
           </div>
         </div>
       </div>

@@ -559,26 +559,144 @@ function StandardKMeans() {
         </div>
       </div>
 
-      {/* How It Works */}
+      {/* Comprehensive K-Means Explanation */}
       <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg p-6">
-        <h4 className="text-xl font-semibold text-gray-800 mb-4">How Standard K-Means Works</h4>
-        <div className="grid md:grid-cols-3 gap-6 text-sm text-gray-700">
-          <div>
-            <h5 className="font-semibold text-purple-800 mb-2">1. Initialize</h5>
-            <p>Place K random centroids (cluster centers) in the data space.</p>
+        <h4 className="text-2xl font-bold text-gray-800 mb-6">Understanding K-Means Clustering</h4>
+        
+        {/* What is K-Means */}
+        <div className="mb-6">
+          <h5 className="text-lg font-semibold text-purple-800 mb-3">🎯 What is K-Means Clustering?</h5>
+          <p className="text-gray-700 mb-3">
+            Imagine walking into a vegetable shop where all vegetables are scattered randomly. K-means clustering is like <strong>organizing these vegetables into groups</strong> - 
+            carrots with carrots, potatoes with potatoes. It automatically finds natural groupings in your data without being told what to look for.
+          </p>
+          <p className="text-gray-700">
+            It's an <strong>unsupervised learning</strong> algorithm, meaning it discovers hidden patterns in data without needing examples of "correct" answers.
+          </p>
+        </div>
+
+        {/* The Algorithm Steps */}
+        <div className="mb-6">
+          <h5 className="text-lg font-semibold text-purple-800 mb-3">⚙️ How Does K-Means Work?</h5>
+          <div className="grid md:grid-cols-4 gap-4">
+            <div className="bg-white p-4 rounded-lg border-l-4 border-purple-400">
+              <div className="text-center mb-2">
+                <span className="inline-block w-8 h-8 bg-purple-500 text-white rounded-full text-sm font-bold leading-8">1</span>
+              </div>
+              <h6 className="font-semibold text-gray-800 mb-2">Choose K</h6>
+              <p className="text-sm text-gray-600">Decide how many groups (clusters) you want. This is the "K" in K-means.</p>
+            </div>
+            <div className="bg-white p-4 rounded-lg border-l-4 border-blue-400">
+              <div className="text-center mb-2">
+                <span className="inline-block w-8 h-8 bg-blue-500 text-white rounded-full text-sm font-bold leading-8">2</span>
+              </div>
+              <h6 className="font-semibold text-gray-800 mb-2">Place Centers</h6>
+              <p className="text-sm text-gray-600">Randomly place K "centroids" (cluster centers) in your data space.</p>
+            </div>
+            <div className="bg-white p-4 rounded-lg border-l-4 border-green-400">
+              <div className="text-center mb-2">
+                <span className="inline-block w-8 h-8 bg-green-500 text-white rounded-full text-sm font-bold leading-8">3</span>
+              </div>
+              <h6 className="font-semibold text-gray-800 mb-2">Assign Points</h6>
+              <p className="text-sm text-gray-600">Each data point joins the nearest centroid's group (shortest distance).</p>
+            </div>
+            <div className="bg-white p-4 rounded-lg border-l-4 border-orange-400">
+              <div className="text-center mb-2">
+                <span className="inline-block w-8 h-8 bg-orange-500 text-white rounded-full text-sm font-bold leading-8">4</span>
+              </div>
+              <h6 className="font-semibold text-gray-800 mb-2">Move Centers</h6>
+              <p className="text-sm text-gray-600">Move each centroid to the middle (average) of its assigned points.</p>
+            </div>
           </div>
-          <div>
-            <h5 className="font-semibold text-purple-800 mb-2">2. Assign</h5>
-            <p>Assign each data point to the nearest centroid based on Euclidean distance.</p>
-          </div>
-          <div>
-            <h5 className="font-semibold text-purple-800 mb-2">3. Update</h5>
-            <p>Move each centroid to the center (mean) of its assigned points.</p>
+          <div className="mt-4 bg-white p-4 rounded-lg">
+            <p className="text-sm text-gray-700">
+              <strong>🔄 Repeat steps 3-4</strong> until centroids stop moving much. This means the algorithm has found stable, natural groupings!
+            </p>
           </div>
         </div>
-        <p className="text-sm text-gray-600 mt-4">
-          <strong>Repeat steps 2-3 until convergence:</strong> When centroids stop moving significantly, the algorithm has found stable clusters!
-        </p>
+
+        {/* Key Concepts */}
+        <div className="mb-6">
+          <h5 className="text-lg font-semibold text-purple-800 mb-3">📊 Key Concepts</h5>
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="bg-white p-3 rounded-lg">
+              <h6 className="font-semibold text-gray-800 text-sm mb-1">Centroids</h6>
+              <p className="text-xs text-gray-600">The "center" of each cluster. Think of it as the group's representative point.</p>
+            </div>
+            <div className="bg-white p-3 rounded-lg">
+              <h6 className="font-semibold text-gray-800 text-sm mb-1">Distance</h6>
+              <p className="text-xs text-gray-600">Usually Euclidean (straight-line) distance. Points join the closest centroid.</p>
+            </div>
+            <div className="bg-white p-3 rounded-lg">
+              <h6 className="font-semibold text-gray-800 text-sm mb-1">Convergence</h6>
+              <p className="text-xs text-gray-600">When centroids barely move between iterations - clusters are stable.</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Real World Applications */}
+        <div className="mb-6">
+          <h5 className="text-lg font-semibold text-purple-800 mb-3">🌍 Real-World Applications</h5>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <ul className="text-sm text-gray-700 space-y-2">
+                <li><strong>🛒 Customer Segmentation:</strong> Group customers by buying behavior</li>
+                <li><strong>🧬 Biology:</strong> Classify gene sequences, species grouping</li>
+                <li><strong>🖼️ Image Processing:</strong> Color quantization, image compression</li>
+                <li><strong>📊 Market Research:</strong> Survey response patterns</li>
+              </ul>
+            </div>
+            <div>
+              <ul className="text-sm text-gray-700 space-y-2">
+                <li><strong>🌐 Social Networks:</strong> Community detection, friend groups</li>
+                <li><strong>🏥 Healthcare:</strong> Patient risk groups, treatment responses</li>
+                <li><strong>📍 Geography:</strong> City planning, delivery route optimization</li>
+                <li><strong>🎵 Music:</strong> Song recommendation, genre classification</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Choosing K */}
+        <div className="mb-6">
+          <h5 className="text-lg font-semibold text-purple-800 mb-3">🤔 How to Choose K (Number of Clusters)?</h5>
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="bg-white p-3 rounded-lg">
+              <h6 className="font-semibold text-gray-800 text-sm mb-1">Domain Knowledge</h6>
+              <p className="text-xs text-gray-600">Know your data! If segmenting customers, you might want 3-5 groups.</p>
+            </div>
+            <div className="bg-white p-3 rounded-lg">
+              <h6 className="font-semibold text-gray-800 text-sm mb-1">Elbow Method</h6>
+              <p className="text-xs text-gray-600">Plot error vs K. Choose where the "elbow" bends (error stops improving much).</p>
+            </div>
+            <div className="bg-white p-3 rounded-lg">
+              <h6 className="font-semibold text-gray-800 text-sm mb-1">Trial & Error</h6>
+              <p className="text-xs text-gray-600">Try different K values and see which gives the most meaningful groups.</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Pros and Cons */}
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="bg-green-50 p-4 rounded-lg border-l-4 border-green-400">
+            <h6 className="font-semibold text-green-800 mb-2">✅ Strengths of K-Means:</h6>
+            <ul className="text-sm text-green-700 space-y-1">
+              <li>• Simple to understand and implement</li>
+              <li>• Very fast, works well with large datasets</li>
+              <li>• Guaranteed to converge (find a solution)</li>
+              <li>• Works great with spherical (round) clusters</li>
+            </ul>
+          </div>
+          <div className="bg-orange-50 p-4 rounded-lg border-l-4 border-orange-400">
+            <h6 className="font-semibold text-orange-800 mb-2">⚠️ Limitations:</h6>
+            <ul className="text-sm text-orange-700 space-y-1">
+              <li>• Must choose K beforehand</li>
+              <li>• Struggles with non-spherical clusters</li>
+              <li>• Sensitive to initial centroid placement</li>
+              <li>• Affected by outliers and different scales</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   );
