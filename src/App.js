@@ -2,6 +2,7 @@
 import React from 'react';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import Navigation from './components/shared/Navigation';
+import ScrollToTop from './components/shared/ScrollToTop';
 import HomePage from './components/pages/HomePage';
 import LinearRegressionPage from './components/pages/LinearRegressionPage';
 import KMeansPage from './components/pages/KMeansPage';
@@ -13,6 +14,7 @@ function App() {
   return (
     <Router>
       <div className="App min-h-screen bg-gray-50">
+        <ScrollToTop />
         <Navigation />
         <Routes>
           <Route path="/" element={<HomePage />} />
