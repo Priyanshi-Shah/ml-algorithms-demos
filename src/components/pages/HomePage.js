@@ -63,6 +63,21 @@ function HomePage() {
       ],
       difficulty: 'Advanced',
       status: 'ready'
+    },
+    {
+      id: 'naive-bayes',
+      title: 'Naive Bayes Classifier',
+      description: 'Experience probabilistic classification with Bayes\' theorem. Interactive spam detection with step-by-step calculations.',
+      path: '/naive-bayes',
+      color: 'from-purple-500 to-indigo-600',
+      features: [
+        'Text classification demo',
+        'Probability visualization',
+        'Bayes theorem breakdown',
+        'Laplace smoothing control'
+      ],
+      difficulty: 'Intermediate',
+      status: 'ready'
     }
   ];
 

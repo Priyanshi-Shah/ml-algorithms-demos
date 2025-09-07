@@ -8,6 +8,7 @@ import LinearRegressionPage from './components/pages/LinearRegressionPage';
 import KMeansPage from './components/pages/KMeansPage';
 import LogisticRegressionPage from './components/pages/LogisticRegressionPage';
 import SVMPage from './components/pages/SVMPage';
+import NaiveBayesPage from './components/pages/NaiveBayesPage';
 import LossFunctionsPage from './components/pages/LossFunctionsPage';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
           <Route path="/kmeans" element={<KMeansPage />} />
           <Route path="/logistic-regression" element={<LogisticRegressionPage />} />
           <Route path="/svm" element={<SVMPage />} />
+          <Route path="/naive-bayes" element={<NaiveBayesPage />} />
           <Route path="/loss-functions" element={<LossFunctionsPage />} />
         </Routes>
       </div>
