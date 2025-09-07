@@ -7,6 +7,7 @@ function SVM() {
   const [currentCursorPos, setCurrentCursorPos] = useState({ x: 0, y: 0 });
   const [cursorTooltip, setCursorTooltip] = useState({ show: false, x: 0, y: 0 });
   const [C, setC] = useState(1.0);
+  const [selectedClass, setSelectedClass] = useState(1);
 
   // Initialize with default data
   useEffect(() => {
@@ -109,7 +110,7 @@ function SVM() {
     const newPoint = {
       x: Math.floor(Math.random() * 100),
       y: Math.floor(Math.random() * 100),
-      class: Math.random() > 0.5 ? 1 : 0,
+      class: selectedClass,
       id: Date.now(),
       timestamp: Date.now()
     };
@@ -123,13 +124,10 @@ function SVM() {
     const y = 100 - ((e.clientY - rect.top - 20) / (rect.height - 40)) * 100;
     
     if (x >= 0 && x <= 100 && y >= 0 && y <= 100) {
-      // Smart class assignment: upper-right tends to be class 1, lower-left class 0
-      const assignedClass = (x > 50 && y > 50) ? 1 : 0;
-      
       const newPoint = {
         x: Math.round(x),
         y: Math.round(y),
-        class: assignedClass,
+        class: selectedClass,
         id: Date.now(),
         timestamp: Date.now()
       };
@@ -247,8 +245,8 @@ function SVM() {
   const class1Data = data.filter(d => d.class === 1);
 
   // Calculate hyperplane line points for display
-  const hyperplanePoints = useMemo(() => {
-    if (!hyperplane) return [];
+  const { hyperplanePoints, marginLines } = useMemo(() => {
+    if (!hyperplane) return { hyperplanePoints: [], marginLines: { upper: [], lower: [] } };
     
     const { a, b, c } = hyperplane;
     const points = [];
@@ -263,8 +261,41 @@ function SVM() {
       }
     }
     
-    return points;
-  }, [hyperplane]);
+    // Calculate margin lines (parallel to hyperplane at distance = margin)
+    const marginDistance = margin || 0;
+    const norm = Math.sqrt(a * a + b * b);
+    
+    // Upper margin: (a*x + b*y + c) = +margin_distance * norm
+    // Lower margin: (a*x + b*y + c) = -margin_distance * norm
+    const upperMarginPoints = [];
+    const lowerMarginPoints = [];
+    
+    if (norm > 0 && marginDistance > 0) {
+      for (let x = 0; x <= 100; x += 5) {
+        if (Math.abs(b) > 0.001) {
+          // Upper margin line: y = (-a*x - c - margin_distance*norm) / b
+          const yUpper = (-a * x - c - marginDistance * norm) / b;
+          if (yUpper >= 0 && yUpper <= 100) {
+            upperMarginPoints.push({ x, y: yUpper });
+          }
+          
+          // Lower margin line: y = (-a*x - c + margin_distance*norm) / b
+          const yLower = (-a * x - c + marginDistance * norm) / b;
+          if (yLower >= 0 && yLower <= 100) {
+            lowerMarginPoints.push({ x, y: yLower });
+          }
+        }
+      }
+    }
+    
+    return { 
+      hyperplanePoints: points, 
+      marginLines: { 
+        upper: upperMarginPoints, 
+        lower: lowerMarginPoints 
+      } 
+    };
+  }, [hyperplane, margin]);
 
   return (
     <div className="space-y-6">
@@ -389,7 +420,7 @@ function SVM() {
                           </div>
                         );
                       }
-                      return <div className="bg-white p-2 border rounded shadow-lg">Click to add point at X: {Math.round(currentCursorPos.x)}</div>;
+                      return <div className="bg-white p-2 border rounded shadow-lg">Click to add Class {selectedClass} point at X: {Math.round(currentCursorPos.x)}, Y: {Math.round(currentCursorPos.y)}</div>;
                     }}
                   />
                   <Legend />
@@ -407,15 +438,71 @@ function SVM() {
                     shape={<CustomDot />}
                   />
                   
-                  {/* Linear Hyperplane visualization */}
-                  {hyperplanePoints.length > 0 && (
-                    <Scatter 
-                      name="Hyperplane" 
-                      data={hyperplanePoints} 
-                      fill="none"
-                      line={{ stroke: '#2563eb', strokeWidth: 3 }}
-                      shape={() => null}
-                    />
+                  {/* Hyperplane visualization as line */}
+                  {hyperplane && hyperplanePoints.length >= 2 && (
+                    <>
+                      {/* Draw line segments between hyperplane points */}
+                      {hyperplanePoints.map((point, index) => {
+                        if (index < hyperplanePoints.length - 1) {
+                          const nextPoint = hyperplanePoints[index + 1];
+                          return (
+                            <ReferenceLine
+                              key={`hyperplane-${index}`}
+                              segment={[
+                                { x: point.x, y: point.y },
+                                { x: nextPoint.x, y: nextPoint.y }
+                              ]}
+                              stroke="#2563eb"
+                              strokeWidth={3}
+                              strokeDasharray="none"
+                            />
+                          );
+                        }
+                        return null;
+                      })}
+                      
+                      {/* Upper margin line */}
+                      {marginLines.upper.map((point, index) => {
+                        if (index < marginLines.upper.length - 1) {
+                          const nextPoint = marginLines.upper[index + 1];
+                          return (
+                            <ReferenceLine
+                              key={`upper-margin-${index}`}
+                              segment={[
+                                { x: point.x, y: point.y },
+                                { x: nextPoint.x, y: nextPoint.y }
+                              ]}
+                              stroke="#64748b"
+                              strokeWidth={2}
+                              strokeDasharray="4 4"
+                              opacity={0.7}
+                            />
+                          );
+                        }
+                        return null;
+                      })}
+                      
+                      {/* Lower margin line */}
+                      {marginLines.lower.map((point, index) => {
+                        if (index < marginLines.lower.length - 1) {
+                          const nextPoint = marginLines.lower[index + 1];
+                          return (
+                            <ReferenceLine
+                              key={`lower-margin-${index}`}
+                              segment={[
+                                { x: point.x, y: point.y },
+                                { x: nextPoint.x, y: nextPoint.y }
+                              ]}
+                              stroke="#64748b"
+                              strokeWidth={2}
+                              strokeDasharray="4 4"
+                              opacity={0.7}
+                            />
+                          );
+                        }
+                        return null;
+                      })}
+                    </>
                   )}
                   </ScatterChart>
                 </ResponsiveContainer>
@@ -430,19 +517,14 @@ function SVM() {
                     top: cursorTooltip.y - 30,
                   }}
                 >
-                  ➕ Add data point
+                  ➕ Add Class {selectedClass} point
                 </div>
               )}
             </div>
 
+
             {/* Control buttons below chart */}
             <div className="flex flex-wrap gap-3 mt-4">
-              <button
-                onClick={addPoint}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
-              >
-                ➕ Add Point
-              </button>
               <button
                 onClick={() => loadPreset('linear')}
                 className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
@@ -518,6 +600,44 @@ function SVM() {
             </div>
           </div>
 
+          {/* Class Selection */}
+          <div className="bg-gray-100 rounded-lg p-4">
+            <h4 className="text-lg font-semibold text-gray-700 mb-3">Select Class to Add:</h4>
+            <div className="flex gap-2 mb-4">
+              <button
+                onClick={() => setSelectedClass(0)}
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  selectedClass === 0
+                    ? 'bg-red-600 text-white'
+                    : 'bg-red-100 text-red-700 hover:bg-red-200'
+                }`}
+              >
+                Class 0 (Negative)
+              </button>
+              <button
+                onClick={() => setSelectedClass(1)}
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  selectedClass === 1
+                    ? 'bg-green-600 text-white'
+                    : 'bg-green-100 text-green-700 hover:bg-green-200'
+                }`}
+              >
+                Class 1 (Positive)
+              </button>
+            </div>
+            
+            <button
+              onClick={addPoint}
+              className={`w-full py-2 px-4 rounded-lg transition-colors text-white ${
+                selectedClass === 0 
+                  ? 'bg-red-600 hover:bg-red-700' 
+                  : 'bg-green-600 hover:bg-green-700'
+              }`}
+            >
+              ➕ Add Class {selectedClass} Point
+            </button>
+          </div>
+
           {/* Controls */}
           <div className="bg-gray-50 rounded-lg p-4">
             <h4 className="text-lg font-semibold text-gray-800 mb-3">Controls</h4>
@@ -566,6 +686,10 @@ function SVM() {
               <div className="flex items-center space-x-2">
                 <div className="w-4 h-1 bg-blue-600"></div>
                 <span className="text-sm">Hyperplane</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-4 h-1 bg-gray-500 border-dashed border-t-2" style={{borderStyle: 'dashed'}}></div>
+                <span className="text-sm">Margin Lines</span>
               </div>
             </div>
           </div>
