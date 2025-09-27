@@ -78,14 +78,29 @@ function HomePage() {
       ],
       difficulty: 'Intermediate',
       status: 'ready'
+    },
+    {
+      id: 'decision-trees',
+      title: 'Decision Trees',
+      description: 'Build decision trees step-by-step with the classic tennis dataset. Explore splitting criteria and tree construction.',
+      path: '/decision-trees',
+      color: 'from-green-500 to-emerald-600',
+      features: [
+        'Interactive tree building',
+        'Step-by-step construction',
+        'Entropy vs Gini comparison',
+        'Prediction simulator'
+      ],
+      difficulty: 'Intermediate',
+      status: 'ready'
     }
   ];
 
   const upcomingAlgorithms = [
     { title: 'K-Nearest Neighbors', status: 'coming-soon' },
-    { title: 'Decision Trees', status: 'coming-soon' },
     { title: 'Random Forest', status: 'coming-soon' },
-    { title: 'Neural Networks', status: 'coming-soon' }
+    { title: 'Neural Networks', status: 'coming-soon' },
+    { title: 'Ensemble Methods', status: 'coming-soon' }
   ];
 
   const essentialConcepts = [
