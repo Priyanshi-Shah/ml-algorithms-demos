@@ -108,14 +108,29 @@ function HomePage() {
       ],
       difficulty: 'Advanced',
       status: 'ready'
+    },
+    {
+      id: 'knn',
+      title: 'K-Nearest Neighbors',
+      description: 'Distance-based classification made interactive! Explore how KNN finds nearest neighbors and makes predictions step-by-step.',
+      path: '/knn',
+      color: 'from-indigo-500 to-purple-600',
+      features: [
+        'Interactive point placement',
+        'Step-by-step algorithm demo',
+        'Distance metric comparison',
+        'Real-time neighbor selection'
+      ],
+      difficulty: 'Beginner',
+      status: 'ready'
     }
   ];
 
   const upcomingAlgorithms = [
-    { title: 'K-Nearest Neighbors', status: 'coming-soon' },
     { title: 'Neural Networks', status: 'coming-soon' },
     { title: 'Ensemble Methods', status: 'coming-soon' },
-    { title: 'Deep Learning', status: 'coming-soon' }
+    { title: 'Deep Learning', status: 'coming-soon' },
+    { title: 'Reinforcement Learning', status: 'coming-soon' }
   ];
 
   const essentialConcepts = [

@@ -11,6 +11,7 @@ import SVMPage from './components/pages/SVMPage';
 import NaiveBayesPage from './components/pages/NaiveBayesPage';
 import DecisionTreePage from './components/pages/DecisionTreePage';
 import RandomForestPage from './components/pages/RandomForestPage';
+import KNNPage from './components/pages/KNNPage';
 import LossFunctionsPage from './components/pages/LossFunctionsPage';
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
           <Route path="/naive-bayes" element={<NaiveBayesPage />} />
           <Route path="/decision-trees" element={<DecisionTreePage />} />
           <Route path="/random-forest" element={<RandomForestPage />} />
+          <Route path="/knn" element={<KNNPage />} />
           <Route path="/loss-functions" element={<LossFunctionsPage />} />
         </Routes>
       </div>
