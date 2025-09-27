@@ -215,7 +215,7 @@ function HomePage() {
             {/* Main Heading with Tech Styling */}
             <div className="mb-8">
               <div className="inline-block px-4 py-2 mb-6 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full text-black font-mono text-sm font-semibold">
-                <span className="mr-2">🤖</span>AI with Pri
+                <span className="mr-2">🤖</span>AI.Priyanshi
               </div>
               
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-6 bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 bg-clip-text text-transparent leading-tight">
@@ -259,7 +259,7 @@ function HomePage() {
             {/* Enhanced Social Media Buttons */}
             <div className="flex flex-col md:flex-row items-center justify-center gap-6 mb-4">
               <a 
-                href="https://www.instagram.com/ai_with_pri?igsh=MTl2MG5wYzBreDdicA%3D%3D&utm_source=qr"
+                href="https://www.instagram.com/ai.priyanshi/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex items-center space-x-3 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 px-8 py-4 rounded-full font-bold text-white transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25"
