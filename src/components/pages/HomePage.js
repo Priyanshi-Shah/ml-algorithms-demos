@@ -93,14 +93,29 @@ function HomePage() {
       ],
       difficulty: 'Intermediate',
       status: 'ready'
+    },
+    {
+      id: 'random-forest',
+      title: 'Random Forest',
+      description: 'From single trees to forests! Learn ensemble methods, bagging vs boosting, and how multiple models create better predictions.',
+      path: '/random-forest',
+      color: 'from-emerald-500 to-green-600',
+      features: [
+        'Tree vs Forest comparison',
+        'Bootstrap sampling demo',
+        'Bagging vs Boosting visualization',
+        'Ensemble voting mechanism'
+      ],
+      difficulty: 'Advanced',
+      status: 'ready'
     }
   ];
 
   const upcomingAlgorithms = [
     { title: 'K-Nearest Neighbors', status: 'coming-soon' },
-    { title: 'Random Forest', status: 'coming-soon' },
     { title: 'Neural Networks', status: 'coming-soon' },
-    { title: 'Ensemble Methods', status: 'coming-soon' }
+    { title: 'Ensemble Methods', status: 'coming-soon' },
+    { title: 'Deep Learning', status: 'coming-soon' }
   ];
 
   const essentialConcepts = [
